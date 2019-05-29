@@ -1,0 +1,63 @@
+//
+//  main.cpp
+//  hello
+//
+//  Created by 朱迪 on 2019/5/14.
+//  Copyright © 2019 朱迪. All rights reserved.
+//
+
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
+
+int main(void)
+{
+    char fn[] ="/Users/zhudi/opencv/samples/data/lena.jpg";
+    Mat image = imread(fn);
+    
+    imshow ("Hello, world!",image);
+    waitKey(0);
+    //创建第一个视觉程序“Hello,world!”
+    Mat imageGauss, image1, image2, gray, gray1, hsv, hsvChannels[3];
+    
+    //对图像做高斯平滑处理并显示
+    GaussianBlur(image, imageGauss, Size(5, 5), 0);
+    imshow("source image", image);
+    imshow("Gaussian filtered image", imageGauss);
+    waitKey();
+
+    //对图像使用resize和pyrDown缩小一半再一半，显示各图像
+    resize(image, image1, Size(image.cols/2, image.rows/2));
+    pyrDown(image1, image2);
+    imshow("half size", image1);
+    imshow("quarter size", image2);
+    waitKey();
+
+    //彩色转灰度并作阈值化，显示
+    cvtColor(image, gray, COLOR_BGR2GRAY);
+    threshold(gray, gray1, 120, 0xff, THRESH_BINARY);
+    imshow("gray", gray);
+    imshow("threshold image", gray1);
+    waitKey();
+    
+    
+    //颜色空间转换，显示RGB分量
+    pyrDown(image, image1);
+    cvtColor(image1, gray, COLOR_BGR2GRAY);
+    imshow("source image", image1);
+    imshow("gray", gray);
+    
+    //颜色空间转换，显示HSV分量
+    cvtColor(image, hsv, COLOR_BGR2HSV);
+    split(hsv, hsvChannels);
+    imshow("Hue", hsvChannels[0]);
+    imshow("Saturation", hsvChannels[1]);
+    imshow("Value", hsvChannels[2]);
+    waitKey();
+    
+    
+}
+
+
+
+
